@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  // Create a global key that uniquely identifies the Form widget
+  // and allows validation of the form.
+  final _formKey = GlobalKey<FormState>();
 
   Container newBar(BorderRadius radius) {
     return Container(
@@ -65,7 +69,7 @@ class LoginScreen extends StatelessWidget {
         children: [
           loginWidget,
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+            margin: const EdgeInsets.only(top: 30, left: 20, bottom:0, right: 20),
             decoration: const BoxDecoration(
               // color: Colors.transparent,
               color: Color(0xfff8f6fc),
@@ -89,7 +93,101 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
           ),
-
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+            decoration: const BoxDecoration(
+              // color: Colors.transparent,
+                color: Color(0xfff8f6fc),
+                borderRadius: BorderRadius.all(Radius.circular(5))
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: TextFormField(
+                obscureText: true,
+                enableSuggestions: false,
+                autocorrect: false,
+                decoration: const InputDecoration(
+                  hintText: '8-18位不含特殊字符的数字、字母组合',
+                  labelText: '密码',
+                  // border: UnderlineInputBorder(),
+                  border: InputBorder.none,
+                ),
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return '请输入用户密码';
+                  }
+                  return null;
+                },
+              ),
+            ),
+          ),
+          Container(
+            // padding: const EdgeInsets.symmetric(vertical: 16.0),
+            margin: const EdgeInsets.only(left: 20, right: 20, top: 30),
+            decoration: const BoxDecoration(
+              // borderRadius: BorderRadius.all(Radius.circular(0)),
+              // color: Colors.black
+            ),
+            child: ElevatedButton(
+              style: ButtonStyle(
+                fixedSize: MaterialStateProperty.all(const Size(320, 50)),
+                backgroundColor: MaterialStateProperty.all(const Color(0xfffa436a)),
+                shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(64.0),
+                        side:BorderSide.none
+                    )
+                )
+              ),
+              onPressed: () {
+                // Validate returns true if the form is valid, or false otherwise.
+                if (_formKey.currentState!.validate()) {
+                  // If the form is valid, display a snackbar. In the real world,
+                  // you'd often call a server or save the information in a database.
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Processing Data')),
+                  );
+                }
+              },
+              child: const Text('登录', style: TextStyle(fontSize: 18),),
+            ),
+          ),
+          Center(
+            child: TextButton(
+              onPressed: () {  },
+              child: const Text('忘记密码？', style: TextStyle(fontSize: 12),)
+            )
+          ),
+          Container(
+            alignment: Alignment.center,
+            margin: const EdgeInsets.only(top: 188),
+            height: 32,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('还没有账号？', style: TextStyle(fontSize: 12)),
+                // TextButton(
+                //   onPressed: () => {},
+                //   style: ButtonStyle(
+                //     maximumSize: MaterialStateProperty.all(const Size(64, 36)),
+                //   ),
+                //   child:
+                // )
+                SizedBox(
+                  height: 36,
+                  width: 50,
+                  child: TextButton(
+                      onPressed: () => {},
+                      style: TextButton.styleFrom(
+                        // backgroundColor: Colors.black,
+                        padding: EdgeInsets.zero
+                      ),
+                      child: const Text('马上注册', style: TextStyle(fontSize: 12))
+                  )
+                ),
+              ],
+            ),
+          )
         ],
       )
     );
@@ -119,8 +217,8 @@ class LoginScreen extends StatelessWidget {
                 child: Icon(Icons.arrow_back, color: Colors.black, size: 23, )
             ),
             Positioned(
-              right: -10,
-              top: 40,
+              right: -20,
+              top: 30,
               child: Transform(
                   alignment: Alignment.center,
                   transform: Matrix4.identity()..rotateZ(50 * 3.1415927 / 180),
@@ -128,8 +226,8 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             Positioned(
-              right: -110,
-              top: 40,
+              right: -120,
+              top: 30,
               child: Transform(
                   alignment: Alignment.center,
                   transform: Matrix4.identity()..rotateZ(-50 * 3.1415927 / 180),
