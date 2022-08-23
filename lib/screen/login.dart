@@ -1,4 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class R<T> {
+  late int code;
+  late bool success;
+  late String msg;
+  late T data;
+}
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -6,6 +16,8 @@ class LoginScreen extends StatelessWidget {
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _username = TextEditingController();
+  final TextEditingController _password = TextEditingController();
 
   Container newBar(BorderRadius radius) {
     return Container(
@@ -19,6 +31,24 @@ class LoginScreen extends StatelessWidget {
       ),
       // child: const Padding(padding: EdgeInsets.all(90)),
     );
+  }
+
+  Future<String> login(String username, String password) async {
+    final response = await http.post(
+      Uri.parse('http://192.168.2.206/api/user/login/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'username': username,
+        'password': password
+      })
+    );
+    var body = jsonDecode(response.body);
+    if (!body.success) {
+      throw Exception('Failed to login');
+    }
+    return body['data']['token'];
   }
 
   @override
@@ -78,6 +108,7 @@ class LoginScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextFormField(
+                controller: _username,
                 decoration: const InputDecoration(
                   hintText: '请输入手机号码',
                   labelText: '手机号码',
@@ -103,6 +134,7 @@ class LoginScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextFormField(
+                controller: _password,
                 obscureText: true,
                 enableSuggestions: false,
                 autocorrect: false,
@@ -147,6 +179,10 @@ class LoginScreen extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Processing Data')),
                   );
+
+                  login(_username.text, _password.text).then((token) => {
+                    print('login: $token')
+                  });
                 }
               },
               child: const Text('登录', style: TextStyle(fontSize: 18),),
