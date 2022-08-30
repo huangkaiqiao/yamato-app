@@ -1,14 +1,11 @@
-import 'dart:convert';
+import 'dart:io';
+import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
-class R<T> {
-  late int code;
-  late bool success;
-  late String msg;
-  late T data;
-}
+import '../api/api.dart';
+import '../common/models.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -31,24 +28,6 @@ class LoginScreen extends StatelessWidget {
       ),
       // child: const Padding(padding: EdgeInsets.all(90)),
     );
-  }
-
-  Future<String> login(String username, String password) async {
-    final response = await http.post(
-      Uri.parse('http://192.168.2.206/api/user/login/'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'username': username,
-        'password': password
-      })
-    );
-    var body = jsonDecode(response.body);
-    if (!body.success) {
-      throw Exception('Failed to login');
-    }
-    return body['data']['token'];
   }
 
   @override
@@ -94,137 +73,124 @@ class LoginScreen extends StatelessWidget {
       // color: const Color(0xffffffff),
       // color: const Color(0xff000000),
       padding: const EdgeInsets.only(top: 115, bottom: 40),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          loginWidget,
-          Container(
-            margin: const EdgeInsets.only(top: 30, left: 20, bottom:0, right: 20),
-            decoration: const BoxDecoration(
-              // color: Colors.transparent,
-              color: Color(0xfff8f6fc),
-              borderRadius: BorderRadius.all(Radius.circular(5))
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: TextFormField(
-                controller: _username,
-                decoration: const InputDecoration(
-                  hintText: '请输入手机号码',
-                  labelText: '手机号码',
-                  // border: UnderlineInputBorder(),
-                  border: InputBorder.none,
-                ),
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-              ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-            decoration: const BoxDecoration(
-              // color: Colors.transparent,
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            loginWidget,
+            Container(
+              margin: const EdgeInsets.only(top: 30, left: 20, bottom:0, right: 20),
+              decoration: const BoxDecoration(
+                // color: Colors.transparent,
                 color: Color(0xfff8f6fc),
                 borderRadius: BorderRadius.all(Radius.circular(5))
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: TextFormField(
-                controller: _password,
-                obscureText: true,
-                enableSuggestions: false,
-                autocorrect: false,
-                decoration: const InputDecoration(
-                  hintText: '8-18位不含特殊字符的数字、字母组合',
-                  labelText: '密码',
-                  // border: UnderlineInputBorder(),
-                  border: InputBorder.none,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: TextFormField(
+                  controller: _username,
+                  decoration: const InputDecoration(
+                    hintText: '请输入手机号码',
+                    labelText: '手机号码',
+                    // border: UnderlineInputBorder(),
+                    border: InputBorder.none,
+                  ),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return '请输入手机号码';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return '请输入用户密码';
-                  }
-                  return null;
-                },
               ),
             ),
-          ),
-          Container(
-            // padding: const EdgeInsets.symmetric(vertical: 16.0),
-            margin: const EdgeInsets.only(left: 20, right: 20, top: 30),
-            decoration: const BoxDecoration(
-              // borderRadius: BorderRadius.all(Radius.circular(0)),
-              // color: Colors.black
-            ),
-            child: ElevatedButton(
-              style: ButtonStyle(
-                fixedSize: MaterialStateProperty.all(const Size(320, 50)),
-                backgroundColor: MaterialStateProperty.all(const Color(0xfffa436a)),
-                shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(64.0),
-                        side:BorderSide.none
-                    )
-                )
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+              decoration: const BoxDecoration(
+                // color: Colors.transparent,
+                  color: Color(0xfff8f6fc),
+                  borderRadius: BorderRadius.all(Radius.circular(5))
               ),
-              onPressed: () {
-                // Validate returns true if the form is valid, or false otherwise.
-                if (_formKey.currentState!.validate()) {
-                  // If the form is valid, display a snackbar. In the real world,
-                  // you'd often call a server or save the information in a database.
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                  );
-
-                  login(_username.text, _password.text).then((token) => {
-                    print('login: $token')
-                  });
-                }
-              },
-              child: const Text('登录', style: TextStyle(fontSize: 18),),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: TextFormField(
+                  controller: _password,
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  decoration: const InputDecoration(
+                    hintText: '8-18位不含特殊字符的数字、字母组合',
+                    labelText: '密码',
+                    // border: UnderlineInputBorder(),
+                    border: InputBorder.none,
+                  ),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return '请输入用户密码';
+                    }
+                    return null;
+                  },
+                ),
+              ),
             ),
-          ),
-          Center(
-            child: TextButton(
-              onPressed: () {  },
-              child: const Text('忘记密码？', style: TextStyle(fontSize: 12),)
-            )
-          ),
-          Container(
-            alignment: Alignment.center,
-            margin: const EdgeInsets.only(top: 188),
-            height: 32,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text('还没有账号？', style: TextStyle(fontSize: 12)),
-                // TextButton(
-                //   onPressed: () => {},
-                //   style: ButtonStyle(
-                //     maximumSize: MaterialStateProperty.all(const Size(64, 36)),
-                //   ),
-                //   child:
-                // )
-                SizedBox(
-                  height: 36,
-                  width: 50,
-                  child: TextButton(
-                      onPressed: () => {},
-                      style: TextButton.styleFrom(
-                        // backgroundColor: Colors.black,
-                        padding: EdgeInsets.zero
-                      ),
-                      child: const Text('马上注册', style: TextStyle(fontSize: 12))
+            Container(
+              // padding: const EdgeInsets.symmetric(vertical: 16.0),
+              margin: const EdgeInsets.only(left: 20, right: 20, top: 30),
+              decoration: const BoxDecoration(
+                // borderRadius: BorderRadius.all(Radius.circular(0)),
+                // color: Colors.black
+              ),
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  fixedSize: MaterialStateProperty.all(const Size(320, 50)),
+                  backgroundColor: MaterialStateProperty.all(const Color(0xfffa436a)),
+                  shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(64.0),
+                          side:BorderSide.none
+                      )
                   )
                 ),
-              ],
+                onPressed: () {
+                  // Validate returns true if the form is valid, or false otherwise.
+                  if (_formKey.currentState!.validate()) {
+                    // If the form is valid, display a snackbar. In the real world,
+                    // you'd often call a server or save the information in a database.
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Processing Data')),
+                    );
+
+                    // stderr.writeln('start login2');
+                    login({'mobile': _username.text, 'password': _password.text}).then((body) {
+                      // stdout.writeln('login: $token');
+                      // Navigator.pop(context);
+                      if (!body.success) {
+                        developer.log('TODO: login failed $body[\'msg\']');
+                      }
+                      // try{
+                        final Profile profile = Provider.of<Profile>(context, listen: false);
+                        var data = body.data!;
+                        profile.signIn(data.token);
+                      // }catch(e) {
+                      //   developer.log('profile.signIn :', error: e);
+                      // }
+                    }).catchError((err) {
+                      developer.log('login', error: err);
+                    }).whenComplete(() => developer.log('login: complete'));
+                  }
+                },
+                child: const Text('登录', style: TextStyle(fontSize: 18),),
+              ),
             ),
-          )
-        ],
+            Center(
+              child: TextButton(
+                onPressed: () {  },
+                child: const Text('忘记密码？', style: TextStyle(fontSize: 12),)
+              )
+            ),
+          ],
+        )
       )
     );
 
@@ -271,6 +237,37 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             wrapper,
+            Positioned(
+              bottom: 20,
+              height: 32,
+              width: 360,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('还没有账号？', style: TextStyle(fontSize: 12)),
+                  // TextButton(
+                  //   onPressed: () => {},
+                  //   style: ButtonStyle(
+                  //     maximumSize: MaterialStateProperty.all(const Size(64, 36)),
+                  //   ),
+                  //   child:
+                  // )
+                  SizedBox(
+                      height: 36,
+                      width: 50,
+                      child: TextButton(
+                          onPressed: () => {},
+                          style: TextButton.styleFrom(
+                            // backgroundColor: Colors.black,
+                              padding: EdgeInsets.zero
+                          ),
+                          child: const Text('马上注册', style: TextStyle(fontSize: 12))
+                      )
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

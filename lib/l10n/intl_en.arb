@@ -1,0 +1,6 @@
+{
+    "bottomNavigationAccountTab": "Account",
+    "@bottomNavigationAccountTab": {
+        "description": "Title for Account tab of bottom navigation."
+    }
+}
