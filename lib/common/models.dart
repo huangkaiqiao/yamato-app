@@ -25,12 +25,14 @@ class Profile with ChangeNotifier {
   void signIn(String token) {
     _isAuthenticated = true;
     _token = token;
+    notifyListeners();
   }
 
   void signOut() {
     _isAuthenticated = false;
     _token = '';
     _user = guest;
+    notifyListeners();
   }
 
   bool get isAuthenticated {

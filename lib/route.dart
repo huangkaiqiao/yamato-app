@@ -1,41 +1,33 @@
-// import 'dart:io';
+import 'dart:developer' as developer;
 
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:nicole/components/my_drawer.dart';
 import 'package:flutter_gen/gen_l10n/nicole_localizations.dart';
+import 'package:nicole/screen/home.dart';
+import 'package:nicole/screen/mine.dart';
+
+import 'screen/cat.dart';
 // import 'package:nicole/screen/login.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 class ScaffoldRoute extends StatefulWidget {
-  const ScaffoldRoute({Key? key}) : super(key: key);
+  const ScaffoldRoute({
+    Key? key,
+    required this.restorationId
+  }) : super(key: key);
+
+  final String restorationId;
 
   @override
   ScaffoldRouteState createState() => ScaffoldRouteState();
 
 }
 
-class ScaffoldRouteState extends State<ScaffoldRoute> {
-  int _selectedIndex = 1;
-  // String _token = '';
-
-  // Future<void> _loadToken() async {
-  //   // final prefs = await SharedPreferences.getInstance();
-  //   // final token = prefs.getString('token') ?? '';
-  //   // stdout.write('token = $token');
-  //
-  //   if (token == ''){
-  //     // Navigator.push(
-  //     //   context,
-  //     //   MaterialPageRoute(builder: (context) => const LoginScreen())
-  //     // );
-  //     if(!mounted) return;
-  //     Navigator.pushNamed(context, '/login');
-  //   }
-  //   setState(() {
-  //     _token = (token);
-  //   });
-  //
-  // }
+class ScaffoldRouteState extends State<ScaffoldRoute>
+    with RestorationMixin{
+  final RestorableInt _currentIndex = RestorableInt(0);
+  // int _currentIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +42,13 @@ class ScaffoldRouteState extends State<ScaffoldRoute> {
           label: localizations!.bottomNavigationAccountTab),
     ];
 
+    var navigationDestinationViews = <StatelessWidget>[
+      const HomeScreen(),
+      const CatScreen(),
+      const MineScreen()
+    ];
+
+    developer.log('currentIndex: ${_currentIndex.value}');
     return Scaffold(
       // appBar: AppBar( //导航栏
       //   title: const Text("App Name"),
@@ -57,13 +56,26 @@ class ScaffoldRouteState extends State<ScaffoldRoute> {
       //     IconButton(icon: const Icon(Icons.share), onPressed: () {}),
       //   ],
       // ),
-      body: const Center(
-        child: Text('My Page!')
+      body: Center(
+        child: PageTransitionSwitcher(
+          transitionBuilder: (child, animation, secondaryAnimation) {
+            return FadeThroughTransition(
+              animation: animation,
+              secondaryAnimation: secondaryAnimation,
+              child: child,
+            );
+          },
+          child: _NavigationDestinationView(
+            // Adding [UniqueKey] to make sure the widget rebuilds when transitioning.
+            key: UniqueKey(),
+            item: navigationDestinationViews[_currentIndex.value],
+          ),
+        ),
       ),
       drawer: const MyDrawer(), //抽屉
       bottomNavigationBar: BottomNavigationBar( // 底部导航
         items: bottomNavigationBarItems,
-        currentIndex: _selectedIndex,
+        currentIndex: _currentIndex.value,
         fixedColor: Colors.blue,
         onTap: _onItemTapped,
       ),
@@ -75,9 +87,38 @@ class ScaffoldRouteState extends State<ScaffoldRoute> {
   }
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _currentIndex.value = index;
     });
   }
   void _onAdd(){
+  }
+
+  @override
+  String? get restorationId => widget.restorationId;
+
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    registerForRestoration(_currentIndex, 'bottom_navigation_tab_index');
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _currentIndex.dispose();
+  }
+}
+
+class _NavigationDestinationView extends StatelessWidget {
+  const _NavigationDestinationView({
+    super.key,
+    required this.item,
+  });
+
+  // final BottomNavigationBarItem item;
+  final StatelessWidget item;
+
+  @override
+  Widget build(BuildContext context) {
+    return item.build(context);
   }
 }

@@ -1,9 +1,11 @@
 // Copyright 2018 The Flutter team. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+import 'dart:developer' as developer;
 
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/nicole_localizations.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
@@ -12,9 +14,6 @@ import 'package:nicole/screen/login.dart';
 import 'package:provider/provider.dart';
 
 import 'common/models.dart';
-// import 'package:provider/provider.dart';
-
-// import 'common/models.dart';
 
 Future main() async {
   await dotenv.load(fileName: '.env');
@@ -28,12 +27,12 @@ Future main() async {
       ],
       child: const MyApp(),
   ),);
-  // runApp(
-  //     ChangeNotifierProvider(
-  //       create: (context) => UserModel(),
-  //       child: const MyApp()
-  //     ),
-  // );
+  // if (Platform.isAndroid) {
+  //   SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(
+  //     statusBarColor: Colors.transparent, //设置为透明
+  //   );
+  //   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  // }
 }
 
 class MyApp extends StatelessWidget {
@@ -43,25 +42,29 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<Profile>(
       builder: (final BuildContext context, final Profile profile, final Widget? child) {
-        return MaterialApp(
-            title: 'Nicole',
-            initialRoute: '/',
-            routes: {
-              // '/': (context) => const HomeScreen(),
-              '/': (context) => profile.isAuthenticated ? const ScaffoldRoute(): LoginScreen(),
-              // '/login': (context) => LoginScreen()
-            },
-            localizationsDelegates: const [
-              ...NicoleLocalizations.localizationsDelegates,
-              LocaleNamesLocalizationsDelegate()
-            ],
-            supportedLocales: NicoleLocalizations.supportedLocales,
-            locale: const Locale('zh', 'CN'),
-            localeResolutionCallback: (Locale? locales, supportedLocales) {
-              // deviceLocale = locales?.first;
-              // print(locales);
-              return basicLocaleListResolution([locales!], supportedLocales);
-            },
+        developer.log('builder: $profile');
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle.dark,
+            child:  MaterialApp(
+                title: 'Nicole',
+                initialRoute: '/',
+                routes: {
+                  // '/': (context) => const HomeScreen(),
+                  '/': (context) => profile.isAuthenticated ? const ScaffoldRoute(restorationId: 'scaffold_route_bottom_navigation'): LoginScreen(),
+                  // '/login': (context) => LoginScreen()
+                },
+                localizationsDelegates: const [
+                  ...NicoleLocalizations.localizationsDelegates,
+                  LocaleNamesLocalizationsDelegate()
+                ],
+                supportedLocales: NicoleLocalizations.supportedLocales,
+                locale: const Locale('zh', 'CN'),
+                localeResolutionCallback: (Locale? locales, supportedLocales) {
+                  // deviceLocale = locales?.first;
+                  // print(locales);
+                  return basicLocaleListResolution([locales!], supportedLocales);
+                },
+            )
         );
       }
     );
