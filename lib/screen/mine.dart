@@ -9,59 +9,6 @@ class MineScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-    Widget draggable = SizedBox(height: 300,
-      child: Column(
-          children: [
-            const Image(
-                image: AssetImage('images/arc.png'),
-                width: 360,
-                // height: 20,
-                fit: BoxFit.contain
-            ),
-            Container(
-              // alignment: Alignment.center,
-                width: 360,
-                padding: const EdgeInsets.all(10),
-                height: 100,
-                // color: const Color(0xFFF9F9F9),
-                color: Colors.black,
-                child: Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(10),
-                  width: 340,
-                  color: Colors.white,
-                  child: Flex(
-                    direction: Axis.vertical,
-                    children: const [
-                      Text('1'),
-                      Text('余额豆', style: TextStyle(color: Colors.black38, fontSize: 12),)
-                    ],
-                  ),
-                )
-            ),
-            Container(
-              // alignment: Alignment.center,
-                width: 360,
-                // height: 100,
-                color: const Color(0xFFF9F9F9),
-                child: Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(10),
-                  width: 340,
-                  color: Colors.white,
-                  child: Flex(
-                    direction: Axis.vertical,
-                    children: const [
-                      Text('2'),
-                      Text('余额豆', style: TextStyle(color: Colors.black38, fontSize: 12),)
-                    ],
-                  ),
-                )
-            ),
-          ]
-      )
-    );
-
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -85,7 +32,12 @@ class MineScreen extends StatelessWidget {
       ),
       backgroundColor: const Color(0xfff5f5f5),
       body: Stack(
+        fit: StackFit.loose,
         children: [
+          const SizedBox(
+            width: 360,
+            height: 800
+          ),
           Container(
               width: 360,
               height: 240,
@@ -124,8 +76,8 @@ class MineScreen extends StatelessWidget {
                         margin: const EdgeInsets.only(left: 10, top: 65),
                         child: Column(
                           children: const [
-                            Text('海顺汽车经销商'),
-                            Text('139****1111'),
+                            Text('海顺汽车经销商', style: TextStyle(fontSize: 18), textAlign: TextAlign.left,),
+                            Text('139****1111', style: TextStyle(fontSize: 16), textAlign: TextAlign.left,),
                           ],
                         )
                       )
@@ -134,44 +86,126 @@ class MineScreen extends StatelessWidget {
                 ],
               )
           ),
-          Positioned(
-            top: 150,
-            child: Draggable(
-              axis: Axis.vertical,
-              data: 10,
-              feedback: Material(color: Colors.transparent, child: draggable),
-              childWhenDragging: Container(),
-              // maxSimultaneousDrags: 10,
-              child: draggable,
-            )
-          ),
-          // Positioned(
-          //   top: 200,
-          //   child: DragTarget<int>(
-          //     builder: (BuildContext context, List<dynamic> accepted, List<dynamic> rejected,) {
-          //         return Container(
-          //           height: 100.0,
-          //           width: 100.0,
-          //           color: Colors.cyan,
-          //           child: Center(
-          //             child: Column(
-          //               children: const [
-          //                 Text('0'),
-          //                 Text('余额豆')
-          //               ]
-          //             ),
-          //           ),
-          //         );
-          //         },
-          //       onAccept: (int data) {
-          //         // setState(() {
-          //         //   acceptedData += data;
-          //         // });
-          //       },
-          //     ),
-          // )
+          _DragVertical()
         ],
       )
     );
+  }
+}
+
+class _DragVertical extends StatefulWidget {
+  @override
+  _DragVerticalState createState() => _DragVerticalState();
+}
+
+class _DragVerticalState extends State<_DragVertical> {
+  double _top = 150;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+        children: <Widget>[
+          Positioned(
+        top: _top,
+        child: GestureDetector(
+          //垂直方向拖动事件
+        onVerticalDragUpdate: (DragUpdateDetails details) {
+          setState(() {
+            _top += details.delta.dy;
+          });
+        },
+        onVerticalDragEnd: (DragEndDetails details) {
+          setState(() {
+            _top = 150;
+          });
+        },
+        child: Column(
+            children: [
+              const Image(
+                  image: AssetImage('images/arc.png'),
+                  width: 360,
+                  // height: 220,
+                  fit: BoxFit.contain
+              ),
+              Container(
+                color: const Color(0xFFF9F9F9),
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    Container(
+                      // alignment: Alignment.center,
+                      padding: const EdgeInsets.all(10),
+                      width: 340,
+                      color: Colors.white,
+                      child: Flex(
+                        direction: Axis.vertical,
+                        children: const [
+                          Text('6000'),
+                          Text('余额豆', style: TextStyle(color: Colors.black38, fontSize: 12),)
+                        ],
+                      ),
+                    ),
+                    Container(
+                      // alignment: Alignment.center,
+                      width: 340,
+                      // height: 100,
+                      // color: const Color(0xFFF9F9F9),
+                      color: Colors.white,
+                      padding: const EdgeInsets.all(10),
+                      margin: const EdgeInsets.only(top: 10),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Column(
+                              children: const [
+                                Icon(Icons.list_alt, size: 24, color: Color(0xFFFA436A)),
+                                Text("全部订单", style: TextStyle(fontSize: 12, height: 2))
+                              ],
+                            ),
+                            Column(
+                              children: const [
+                                Icon(Icons.monetization_on_outlined, size: 24, color: Color(0xfffa436a)),
+                                Text("待付款", style: TextStyle(fontSize: 12, height: 2))
+                              ],
+                            ),
+                            Column(
+                              children: const [
+                                Icon(Icons.delivery_dining, size: 24, color: Color(0xFFFA436A),),
+                                Text("待收货", style: TextStyle(fontSize: 12, height: 2))
+                              ],
+                            ),
+                            Column(
+                              children: const [
+                                Icon(Icons.refresh, size: 24, color: Color(0xFFFA436A)),
+                                Text("退款/售后", style: TextStyle(fontSize: 12, height: 2))
+                              ],
+                            ),
+                          ]
+                      ),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: const [
+                              Icon(Icons.query_builder),
+                              Text("我的权益"),
+                              Text("消费享好礼"),
+                              Icon(Icons.arrow_forward_ios)
+                            ],
+                          )
+                        ],
+                      )
+                    )
+                  ],
+                )
+              )
+            ]
+        )
+    )
+    )
+    ]);
   }
 }
