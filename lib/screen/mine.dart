@@ -128,6 +128,7 @@ class _DragVerticalState extends State<_DragVertical> {
                   fit: BoxFit.contain
               ),
               Container(
+                width: 360,
                 color: const Color(0xFFF9F9F9),
                 padding: const EdgeInsets.all(10),
                 child: Column(
@@ -151,10 +152,10 @@ class _DragVerticalState extends State<_DragVertical> {
                       // height: 100,
                       // color: const Color(0xFFF9F9F9),
                       color: Colors.white,
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                       margin: const EdgeInsets.only(top: 10),
                       child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Column(
@@ -186,19 +187,245 @@ class _DragVerticalState extends State<_DragVertical> {
                     ),
                     Container(
                       color: Colors.white,
+                      width: 340,
+                      margin: const EdgeInsets.only(top: 10),
+                      padding: const EdgeInsets.only(top: 10, left: 0, bottom: 10, right: 0),
                       child: Column(
                         children: [
-                          Row(
-                            children: const [
-                              Icon(Icons.query_builder),
-                              Text("我的权益"),
-                              Text("消费享好礼"),
-                              Icon(Icons.arrow_forward_ios)
-                            ],
-                          )
+                          SizedBox(
+                            height: 46,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                const SizedBox(
+                                  width: 30,
+                                  child: Icon(Icons.query_builder_outlined, size: 20, color: Color(0xFFF6E5A3)),
+                                ),
+                                SizedBox(
+                                    width: 270,
+                                    child: Row(
+                                      mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+                                      children: const [
+                                        Text("我的权益", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),),
+                                        Text("消费享好礼", style: TextStyle(color: Colors.black38, fontSize: 13, fontWeight: FontWeight.w400)),
+                                      ],
+                                    )
+                                ),
+                                const SizedBox(
+                                  width: 30,
+                                  child: Icon(Icons.arrow_forward_ios, size: 13, color: Colors.black54),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 1,
+                            width: 320,
+                            margin: const EdgeInsets.only(left: 40),
+                            alignment: Alignment.centerRight,
+                            color: const Color(0xFFF0F0F0),
+                          ),
+                          SizedBox(
+                            height: 46,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                const SizedBox(
+                                  width: 30,
+                                  child: Icon(Icons.wallet, size: 20, color: Color(0xFFE07472)),
+                                ),
+                                SizedBox(
+                                    width: 270,
+                                    child: Row(
+                                      mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+                                      children: const [
+                                        Text("我的钱包", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),),
+                                        Text("", style: TextStyle(color: Colors.black38, fontSize: 13, fontWeight: FontWeight.w400)),
+                                      ],
+                                    )
+                                ),
+                                const SizedBox(
+                                  width: 30,
+                                  child: Icon(Icons.arrow_forward_ios, size: 13, color: Colors.black54),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 1,
+                            width: 320,
+                            margin: const EdgeInsets.only(left: 40),
+                            alignment: Alignment.centerRight,
+                            color: const Color(0xFFF0F0F0),
+                          ),
+                          SizedBox(
+                            height: 46,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                const SizedBox(
+                                  width: 30,
+                                  child: Icon(Icons.location_on_rounded, size: 20, color: Color(0xFF5FCDA2)),
+                                ),
+                                SizedBox(
+                                    width: 270,
+                                    child: Row(
+                                      mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+                                      children: const [
+                                        Text("地址管理", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),),
+                                        Text("", style: TextStyle(color: Colors.black38, fontSize: 13, fontWeight: FontWeight.w400)),
+                                      ],
+                                    )
+                                ),
+                                const SizedBox(
+                                  width: 30,
+                                  child: Icon(Icons.arrow_forward_ios, size: 13, color: Colors.black54),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 1,
+                            width: 320,
+                            margin: const EdgeInsets.only(left: 40),
+                            alignment: Alignment.centerRight,
+                            color: const Color(0xFFF0F0F0),
+                          ),
+                          SizedBox(
+                            height: 46,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                const SizedBox(
+                                  width: 30,
+                                  child: Icon(Icons.arrow_circle_right, size: 20, color: Color(0xFF9789F7)),
+                                ),
+                                SizedBox(
+                                    width: 270,
+                                    child: Row(
+                                      mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+                                      children: const [
+                                        Text("分享", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),),
+                                        Text("邀请好友赢10万大礼", style: TextStyle(color: Colors.black38, fontSize: 13, fontWeight: FontWeight.w400)),
+                                      ],
+                                    )
+                                ),
+                                const SizedBox(
+                                  width: 30,
+                                  child: Icon(Icons.arrow_forward_ios, size: 13, color: Colors.black54),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 1,
+                            width: 320,
+                            margin: const EdgeInsets.only(left: 40),
+                            alignment: Alignment.centerRight,
+                            color: const Color(0xFFF0F0F0),
+                          ),
+                          SizedBox(
+                            height: 46,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                const SizedBox(
+                                  width: 30,
+                                  child: Icon(Icons.message, size: 20, color: Color(0xFFEE883B)),
+                                ),
+                                SizedBox(
+                                    width: 270,
+                                    child: Row(
+                                      mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+                                      children: const [
+                                        Text("晒单", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),),
+                                        Text("晒单抢红包", style: TextStyle(color: Colors.black38, fontSize: 13, fontWeight: FontWeight.w400)),
+                                      ],
+                                    )
+                                ),
+                                const SizedBox(
+                                  width: 30,
+                                  child: Icon(Icons.arrow_forward_ios, size: 13, color: Colors.black54),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 1,
+                            width: 320,
+                            margin: const EdgeInsets.only(left: 40),
+                            alignment: Alignment.centerRight,
+                            color: const Color(0xFFF0F0F0),
+                          ),
+                          SizedBox(
+                            height: 46,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                const SizedBox(
+                                  width: 30,
+                                  child: Icon(Icons.star_rounded, size: 20, color: Color(0xFF54B4EF)),
+                                ),
+                                SizedBox(
+                                    width: 270,
+                                    child: Row(
+                                      mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+                                      children: const [
+                                        Text("我的收藏", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),),
+                                        Text("", style: TextStyle(color: Colors.black38, fontSize: 13, fontWeight: FontWeight.w400)),
+                                      ],
+                                    )
+                                ),
+                                const SizedBox(
+                                  width: 30,
+                                  child: Icon(Icons.arrow_forward_ios, size: 13, color: Colors.black54),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 1,
+                            width: 320,
+                            margin: const EdgeInsets.only(left: 40),
+                            alignment: Alignment.centerRight,
+                            color: const Color(0xFFF0F0F0),
+                          ),
+                          SizedBox(
+                            height: 46,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                const SizedBox(
+                                  width: 30,
+                                  child: Icon(Icons.settings, size: 20, color: Color(0xFFE07472)),
+                                ),
+                                SizedBox(
+                                    width: 270,
+                                    child: Row(
+                                      mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+                                      children: const [
+                                        Text("设置", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),),
+                                        Text("", style: TextStyle(color: Colors.black38, fontSize: 13, fontWeight: FontWeight.w400)),
+                                      ],
+                                    )
+                                ),
+                                const SizedBox(
+                                  width: 30,
+                                  child: Icon(Icons.arrow_forward_ios, size: 13, color: Colors.black54),
+                                )
+                              ],
+                            ),
+                          ),
                         ],
                       )
-                    )
+                    ),
                   ],
                 )
               )
