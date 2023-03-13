@@ -2,13 +2,13 @@ import 'dart:developer' as developer;
 
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:nicole/components/my_drawer.dart';
-import 'package:flutter_gen/gen_l10n/nicole_localizations.dart';
-import 'package:nicole/screen/home.dart';
-import 'package:nicole/screen/mine.dart';
+import 'package:yamato/components/my_drawer.dart';
+import 'package:flutter_gen/gen_l10n/yamato_localizations.dart';
+import 'package:yamato/screen/home.dart';
+import 'package:yamato/screen/mine.dart';
 
 import 'screen/cat.dart';
-// import 'package:nicole/screen/login.dart';
+// import 'package:yamato/screen/login.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 class ScaffoldRoute extends StatefulWidget {
@@ -31,7 +31,7 @@ class ScaffoldRouteState extends State<ScaffoldRoute>
 
   @override
   Widget build(BuildContext context) {
-    final localizations = NicoleLocalizations.of(context);
+    final localizations = YamatoLocalizations.of(context);
 
     var bottomNavigationBarItems = <BottomNavigationBarItem>[
       const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),

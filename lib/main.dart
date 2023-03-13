@@ -7,10 +7,10 @@ import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_gen/gen_l10n/nicole_localizations.dart';
+import 'package:flutter_gen/gen_l10n/yamato_localizations.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
-import 'package:nicole/route.dart';
-import 'package:nicole/screen/login.dart';
+import 'package:yamato/route.dart';
+import 'package:yamato/screen/login.dart';
 import 'package:provider/provider.dart';
 
 import 'common/models.dart';
@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         return AnnotatedRegion<SystemUiOverlayStyle>(
             value: SystemUiOverlayStyle.dark,
             child:  MaterialApp(
-                title: 'Nicole',
+                title: 'Yamato',
                 initialRoute: '/',
                 routes: {
                   // '/': (context) => const HomeScreen(),
@@ -54,10 +54,10 @@ class MyApp extends StatelessWidget {
                   // '/login': (context) => LoginScreen()
                 },
                 localizationsDelegates: const [
-                  ...NicoleLocalizations.localizationsDelegates,
+                  ...YamatoLocalizations.localizationsDelegates,
                   LocaleNamesLocalizationsDelegate()
                 ],
-                supportedLocales: NicoleLocalizations.supportedLocales,
+                supportedLocales: YamatoLocalizations.supportedLocales,
                 locale: const Locale('zh', 'CN'),
                 localeResolutionCallback: (Locale? locales, supportedLocales) {
                   // deviceLocale = locales?.first;

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hongryeon.nicole">
+    package="com.hongryeon.yamato">
    <application
-        android:label="nicole"
+        android:label="yamato"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

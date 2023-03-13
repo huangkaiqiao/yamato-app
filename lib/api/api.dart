@@ -4,7 +4,7 @@ import 'dart:developer' as developer;
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:nicole/api/result.dart';
+import 'package:yamato/api/result.dart';
 
 // import '../common/models.dart';
 
@@ -85,7 +85,7 @@ Future<R<T>> request<T>(Options options) async {
 
 Future<R<LoginResult>> login(data) {
   return request(Options(
-      '/api/user/login/',
+      '/api/auth/login',
       method: 'POST',
       data: data
   ));
